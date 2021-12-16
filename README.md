@@ -1,6 +1,15 @@
 # flutter-android-build-action
 🏗 Easy to use flutter android build action
 
+You can find a complete usage example in the [netzpolitik.org app repository](https://github.com/NiklasLehnfeld/netzpolitik-mobile/blob/main/.github/workflows/main.yaml)
+
+## Requirements
+This action runs 
+```
+flutter pub run build_runner build --delete-conflicting-outputs
+```
+before it starts. Means you need the [`build_runner`](https://pub.dev/packages/build_runner) package to be installed.
+
 ## Usage
 
 ```yaml
