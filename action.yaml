@@ -1,5 +1,9 @@
 name: flutter-android-build
-description: 'Build Android apk from flutter project'
+description: '🏗 Easy to use flutter android build action'
+author: NiklasLehnfeld
+branding:
+  icon: 'tool'
+  color: 'black'
 
 inputs:
   release:
