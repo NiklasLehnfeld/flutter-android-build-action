@@ -16,7 +16,7 @@ jobs:
     container: ghcr.io/niklaslehnfeld/flutter-essentials-docker:master
     steps:
       - uses: actions/checkout@v2
-      - uses: ./.github/actions/flutter-android-build
+      - uses: NiklasLehnfeld/flutter-android-build-action@v1
         id: android-build
         with:
           release: true
