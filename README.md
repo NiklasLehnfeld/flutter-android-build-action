@@ -59,3 +59,14 @@ input:
     required: false
     default: ''
 ```
+
+## Outputs
+```yaml
+outputs:
+  apk-path:
+    description: "Path to built apk if build-type was set to apk or both"
+    value: ${{ steps.path-output.outputs.apk-path }}
+  aab-path:
+    description: "Path to built aab if build-type was set to aab or both"
+    value: ${{ steps.path-output.outputs.aab-path }}
+```
