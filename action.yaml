@@ -1,0 +1,105 @@
+name: flutter-android-build
+description: 'Build Android apk from flutter project'
+
+inputs:
+  release:
+    description: 'If set to `true`, it will run release builds, otherwise debug builds'
+    required: false
+    default: false
+  build-type:
+    description: 'apk | aab | both'
+    required: false
+    default: both
+  keystore:
+    description: 'Base64 encoded keystore.jks, required if release is true'
+    required: false
+    default: ''
+  keystore-pwd:
+    description: 'keystore password, required if release is true'
+    required: false
+    default: ''
+  key-pwd:
+    description: 'key password, required if release is true'
+    required: false
+    default: ''
+
+outputs:
+  apk-path:
+    description: "Path to built apk if build-type was set to apk or both"
+    value: ${{ steps.path-output.outputs.apk-path }}
+  aab-path:
+    description: "Path to built aab if build-type was set to aab or both"
+    value: ${{ steps.path-output.outputs.aab-path }}
+
+runs:
+  using: "composite"
+  steps:
+    - run: flutter pub get
+      shell: bash
+    - run: flutter pub run build_runner build --delete-conflicting-outputs
+      shell: bash
+    - run: echo "${{ inputs.keystore }}" | base64 -d > android/keystore.jks
+      shell: bash
+    - env:
+        NETZPOLITIK_KEY_PWD: ${{ inputs.key-pwd }}
+        NETZPOLITIK_KEYSTORE_PWD: ${{ inputs.keystore-pwd }}
+      run: |
+        if [ ${{ inputs.release }} = "true" ]; then
+
+          if [ ${{ inputs.build-type }} = "apk" ] || [ ${{ inputs.build-type }} = "both" ]; then
+            flutter build apk || true
+          fi
+          if [ ${{ inputs.build-type }} = "aab" ] || [ ${{ inputs.build-type }} = "both" ]; then
+            flutter build appbundle || true
+          fi
+
+        else
+
+          if [ ${{ inputs.build-type }} = "apk" ] || [ ${{ inputs.build-type }} = "both" ]; then
+            flutter build apk --debug || true
+          fi
+          if [ ${{ inputs.build-type }} = "aab" ] || [ ${{ inputs.build-type }} = "both" ]; then
+            flutter build appbundle --debug || true
+          fi
+        fi
+      shell: bash
+    - run: |
+
+        if [ ${{ inputs.release }} = "true" ]; then
+
+          if [ ${{ inputs.build-type }} = "apk" ] || [ ${{ inputs.build-type }} = "both" ]; then
+            APK_PATH=build/app/outputs/apk/release/`ls build/app/outputs/apk/release | grep apk`
+            if [ ! -f $APK_PATH ]; then
+              exit 1
+            fi
+            echo "::set-output name=apk-path::$(echo $APK_PATH)"
+          fi
+
+          if [ ${{ inputs.build-type }} = "aab" ] || [ ${{ inputs.build-type }} = "both" ]; then
+            AAB_PATH=build/app/outputs/bundle/release/`ls build/app/outputs/bundle/release | grep aab`
+            if [ ! -f $AAB_PATH ]; then
+              exit 1
+            fi
+            echo "::set-output name=aab-path::$(echo $AAB_PATH)"
+          fi
+
+        else
+
+          if [ ${{ inputs.build-type }} = "apk" ] || [ ${{ inputs.build-type }} = "both" ]; then
+            APK_PATH=build/app/outputs/apk/debug/`ls build/app/outputs/apk/debug | grep apk`
+            if [ ! -f $APK_PATH ]; then
+              exit 1
+            fi
+            echo "::set-output name=apk-path::$(echo $APK_PATH)"
+          fi
+
+          if [ ${{ inputs.build-type }} = "aab" ] || [ ${{ inputs.build-type }} = "both" ]; then
+            AAB_PATH=build/app/outputs/bundle/debug/`ls build/app/outputs/bundle/debug | grep aab`
+            if [ ! -f $AAB_PATH ]; then
+              exit 1
+            fi
+            echo "::set-output name=aab-path::$(echo $AAB_PATH)"
+          fi
+        fi
+      shell: bash
+      id: path-output
