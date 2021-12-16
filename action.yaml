@@ -2,7 +2,7 @@ name: flutter-android-build
 description: '🏗 Easy to use flutter android build action'
 author: NiklasLehnfeld
 branding:
-  icon: 'tool'
+  icon: 'zap'
   color: 'black'
 
 inputs:
