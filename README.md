@@ -59,4 +59,3 @@ input:
     required: false
     default: ''
 ```
-## Parameters
