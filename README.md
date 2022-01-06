@@ -10,7 +10,7 @@ flutter pub run build_runner build --delete-conflicting-outputs
 ```
 before it starts. Means you need the [`build_runner`](https://pub.dev/packages/build_runner) package to be installed.
 
-## Usage
+## Usage in pipeline
 
 ```yaml
 on:
@@ -42,6 +42,18 @@ jobs:
         with:
           name: release-aab
           path: ${{ steps.android-build.outputs.aab-path }}
+```
+
+## Usage in build.gradle
+```groovy
+    signingConfigs {
+        release {
+            keyAlias 'your_awesome_alias'
+            keyPassword System.env.KEY_PWD ?: ''
+            storeFile file('../keystore.jks')
+            storePassword System.env.KEYSTORE_PWD ?: ''
+        }
+    }
 ```
 
 ## Parameters
