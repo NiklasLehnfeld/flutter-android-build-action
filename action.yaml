@@ -45,9 +45,9 @@ runs:
     - run: echo "${{ inputs.keystore }}" | base64 -d > android/keystore.jks
       shell: bash
     - env:
-      KEY_PWD: ${{ inputs.key-pwd }}
-      KEYSTORE_PWD: ${{ inputs.keystore-pwd }}
-    - run: |
+        KEY_PWD: ${{ inputs.key-pwd }}
+        KEYSTORE_PWD: ${{ inputs.keystore-pwd }}
+      run: |
         if [ ${{ inputs.release }} = "true" ]; then
 
           if [ ${{ inputs.build-type }} = "apk" ] || [ ${{ inputs.build-type }} = "both" ]; then
