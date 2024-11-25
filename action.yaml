@@ -76,7 +76,7 @@ runs:
             if [ ! -f $APK_PATH ]; then
               exit 1
             fi
-            echo "::set-output name=apk-path::$(echo $APK_PATH)"
+            echo "apk-path=$(echo $APK_PATH)" >> $GITHUB_OUTPUT
           fi
 
           if [ ${{ inputs.build-type }} = "aab" ] || [ ${{ inputs.build-type }} = "both" ]; then
@@ -84,7 +84,7 @@ runs:
             if [ ! -f $AAB_PATH ]; then
               exit 1
             fi
-            echo "::set-output name=aab-path::$(echo $AAB_PATH)"
+            echo "aab-path=$(echo $AAB_PATH)" >> $GITHUB_OUTPUT
           fi
 
         else
@@ -94,7 +94,7 @@ runs:
             if [ ! -f $APK_PATH ]; then
               exit 1
             fi
-            echo "::set-output name=apk-path::$(echo $APK_PATH)"
+            echo "apk-path=$(echo $APK_PATH)" >> $GITHUB_OUTPUT
           fi
 
           if [ ${{ inputs.build-type }} = "aab" ] || [ ${{ inputs.build-type }} = "both" ]; then
@@ -102,7 +102,7 @@ runs:
             if [ ! -f $AAB_PATH ]; then
               exit 1
             fi
-            echo "::set-output name=aab-path::$(echo $AAB_PATH)"
+            echo "aab-path=$(echo $AAB_PATH)" >> $GITHUB_OUTPUT
           fi
         fi
       shell: bash
